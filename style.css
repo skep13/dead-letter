@@ -1,0 +1,206 @@
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+:root { color-scheme: dark; }
+body { margin: 0; background: #100608; color: #f0dfe3; font-family: "Courier New", monospace; }
+#desktop { min-height: 100vh; padding: 32px 32px 80px; background: #100608 url("assets/blood-roses.png") center / cover fixed; }
+#desktop > header h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 3px; text-shadow: 0 2px 12px #000; }
+#desktop > header p { margin: 0; color: #c5a5ae; font-size: 14px; line-height: 1.6; text-shadow: 0 2px 6px #000; }
+#desktop > nav { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 32px; }
+button { padding: 10px 16px; border: 1px solid #80505e; border-radius: 5px; background: #251016; color: inherit; font: inherit; cursor: pointer; transition: background-color 150ms ease; }
+button:hover { background: #49202d; }
+button:active { background: #601f34; }
+button:focus-visible, input:focus-visible { outline: 2px solid #e8b2c2; outline-offset: 3px; }
+#desktop > nav button { width: 136px; min-height: 52px; text-align: left; box-shadow: 0 4px 16px #0005; }
+.app-window { position: fixed; top: 150px; left: 200px; z-index: 10; width: min(560px, calc(100vw - 32px)); max-height: calc(100dvh - 180px); border: 1px solid #80505e; border-radius: 8px; background: #180d12; box-shadow: 0 12px 40px #0009; overflow: auto; scrollbar-color: #80505e #180d12; }
+#notes-window { top: 170px; left: 230px; }
+#recordings-window { top: 190px; left: 260px; }
+#messages-window { top: 210px; left: 290px; max-height: calc(100dvh - 240px); }
+.app-window.is-active { border-color: #d7a3b4; box-shadow: 0 16px 60px #000c; }
+.window-header { position: sticky; top: 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 16px; background: #351420; cursor: grab; touch-action: none; user-select: none; }
+.app-window.is-active .window-header { background: #542236; }
+.window-header h2 { margin: 0; font-size: 15px; }
+.window-header button { padding: 6px 10px; flex-shrink: 0; }
+.window-content { padding: 24px; line-height: 1.7; overflow-wrap: anywhere; }
+.window-content h3 { margin-top: 0; color: #e7a6b8; }
+input { max-width: 100%; padding: 10px; border: 1px solid #80505e; border-radius: 4px; background: #10080c; color: #f0dfe3; font: inherit; }
+code { padding: 3px 6px; background: #351420; color: #f3bdcd; }
+.error-message, #password-message { color: #f1a9ba; }
+@media (max-width: 850px) {
+  #desktop { padding: 24px; }
+  #desktop > nav { flex-direction: row; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  #desktop > nav button { width: auto; min-height: 44px; }
+  .app-window, #notes-window, #recordings-window, #messages-window { left: 16px; top: 230px; max-height: calc(100dvh - 250px); }
+}
+@media (max-height: 500px) { .app-window, #notes-window, #recordings-window, #messages-window { top: 16px; max-height: calc(100dvh - 32px); } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+.taskbar {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 60px;
+  padding: 8px 16px;
+  border-top: 1px solid #80505e;
+  background: #180d12f5;
+  box-shadow: 0 -4px 24px #0006;
+}
+
+/* Keep the desktop and its windows inside the available screen. */
+:root { --taskbar-height: 64px; --screen-gap: clamp(12px, 2vw, 28px); }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+#desktop { height: calc(100dvh - var(--taskbar-height)); min-height: 0; padding: var(--screen-gap); overflow: auto; }
+#desktop > header h1 { font-size: clamp(21px, 2.5vw, 28px); }
+#desktop > header p { font-size: clamp(12px, 1.2vw, 14px); }
+#desktop > nav { gap: 10px; margin-top: 24px; }
+#desktop > nav button { min-height: 44px; width: 128px; font-size: 14px; }
+.taskbar { height: var(--taskbar-height); min-height: 0; }
+.app-window, #notes-window, #recordings-window, #messages-window {
+  --window-top: clamp(96px, 17vh, 150px);
+  top: var(--window-top);
+  left: clamp(160px, 23vw, 290px);
+  width: min(560px, calc(100vw - clamp(160px, 23vw, 290px) - 16px));
+  max-height: calc(100dvh - var(--taskbar-height) - var(--window-top) - 12px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-size: 14px;
+}
+#notes-window { --window-top: clamp(108px, 19vh, 170px); }
+#recordings-window { --window-top: clamp(120px, 21vh, 190px); }
+#messages-window { --window-top: clamp(132px, 23vh, 210px); }
+.window-header { flex-shrink: 0; }
+.window-content { min-height: 0; overflow-y: auto; padding: clamp(14px, 2vw, 24px); line-height: 1.6; }
+@media (max-width: 600px) {
+  .app-window, #notes-window, #recordings-window, #messages-window {
+    --window-top: 190px;
+    left: 12px;
+    width: calc(100vw - 24px);
+  }
+  #desktop > nav { flex-direction: row; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  #desktop > nav button { width: auto; padding: 8px 10px; font-size: 12px; }
+  .taskbar-apps { gap: 3px; padding: 3px; }
+  .taskbar-apps button { padding: 8px 6px; font-size: 11px; }
+  .taskbar-clock { font-size: 11px; }
+}
+@media (max-height: 500px) {
+  .app-window, #notes-window, #recordings-window, #messages-window { --window-top: 12px; }
+}
+.taskbar-brand { color: #e7a6b8; font-size: 13px; letter-spacing: 2px; }
+.taskbar-apps { display: flex; gap: 6px; flex: 1; min-width: 0; overflow-x: auto; padding: 4px; }
+.taskbar-apps button { flex-shrink: 0; font-size: 13px; border-bottom: 3px solid transparent; }
+.taskbar-apps button.is-open { border-bottom-color: #80505e; }
+.taskbar-apps button.is-active { background: #542236; border-bottom-color: #e7a6b8; }
+.taskbar-clock { flex-shrink: 0; text-align: right; font-size: 13px; }
+.taskbar-clock small { display: block; margin-top: 3px; color: #c5a5ae; font-size: 10px; }
+.window-controls { display: flex; gap: 6px; }
+.terminal-content { background: #0d090c; color: #d9c9ce; }
+#terminal-output { margin: 0 0 20px; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: 1.6; }
+.terminal-form { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.terminal-form label { color: #e7a6b8; font-size: 12px; }
+.terminal-form input { flex: 1; min-width: 100px; width: 0; }
+.terminal-form button { padding: 10px; }
+/* Incoming messages and the desktop notification. */
+.message-notification { position: fixed; right: 16px; bottom: calc(var(--taskbar-height) + 16px); z-index: 2147483647; display: flex; width: min(360px, calc(100vw - 32px)); border: 1px solid #b87a8d; border-radius: 10px; background: #28131cf5; box-shadow: 0 12px 48px #000a; animation: notification-enter 320ms ease-out; }
+.notification-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; padding: 18px; border: 0; background: transparent; text-align: left; font-size: 14px; }
+.notification-source { margin-bottom: 8px; color: #e7a6b8; font-weight: bold; }
+.notification-source small { color: #c5a5ae; font-weight: normal; }
+.notification-dismiss { align-self: flex-start; margin: 8px 8px 0 0; padding: 4px 8px; border: 0; background: transparent; }
+.incoming-message { padding: 16px; margin-bottom: 28px; border-left: 3px solid #e7a6b8; background: #351420; }
+.incoming-message small { font-size: 11px; color: #c5a5ae; }
+.incoming-message p { margin-bottom: 0; }
+.has-unread::after { content: attr(data-unread); display: inline-block; margin-left: 7px; padding: 1px 5px; border-radius: 10px; background: #e7a6b8; color: #251016; font-size: 11px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+#sound-toggle { flex-shrink: 0; padding: 8px; font-size: 11px; }
+@keyframes notification-enter { from { transform: translateX(calc(100% + 20px)); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .message-notification { animation: none; } }
+@media (max-width: 600px) { #sound-toggle { padding: 6px; font-size: 10px; } }
+#marina-status.is-online { color: #f2bacb; }
+#marina-status.is-online::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: #e8a0b7;
+  box-shadow: 0 0 10px #e8a0b766;
+}
+@media (max-width: 600px) {
+  .taskbar { gap: 8px; padding: 8px; }
+  .taskbar-brand { display: none; }
+}
+
+/* MESSAGES APP — conversation navigation, bubbles and reply composer. */
+#messages-window { width: min(720px, calc(100vw - clamp(16px, 17vw, 220px) - 16px)); left: clamp(16px, 17vw, 220px); }
+.messenger-content { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.messenger { display: grid; grid-template-columns: 155px minmax(0, 1fr); min-height: 0; height: min(460px, 48dvh); }
+.conversation-list { background: #140c10; border-right: 1px solid #59323f; padding: 12px 8px; overflow: auto; }
+.conversation-heading { margin: 0 8px 12px; color: #b88e9b; font-size: 11px; letter-spacing: 2px; }
+.conversation-list button { display: block; width: 100%; padding: 12px 9px; margin-bottom: 6px; text-align: left; background: transparent; border-color: transparent; font-size: 13px; }
+.conversation-list button.selected { background: #49202d; border-color: #80505e; }
+.conversation-list small { display: block; margin-top: 5px; color: #c5a5ae; font-size: 10px; }
+.chat-badge { display: inline-block; padding: 1px 5px; border-radius: 12px; background: #e7a6b8; color: #251016; }
+.conversation-panel { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.conversation-header { padding: 12px 16px; border-bottom: 1px solid #59323f; }
+.conversation-header h3 { margin: 0; font-size: 15px; }
+.conversation-header p { margin: 4px 0 0; font-size: 11px; color: #c5a5ae; }
+.chat-timeline { flex: 1; min-height: 0; overflow-y: auto; padding: 16px; }
+.chat-bubble { width: fit-content; max-width: 90%; margin: 0 0 14px; padding: 10px 12px; border-radius: 10px 10px 10px 2px; background: #351b27; }
+.chat-bubble.from-me { margin-left: auto; background: #48303e; border-radius: 10px 10px 2px 10px; }
+.chat-bubble strong { color: #e7a6b8; font-size: 11px; }
+.chat-bubble p { margin: 4px 0; white-space: pre-wrap; }
+.chat-bubble small { color: #c5a5ae; font-size: 10px; }
+.message-draft { padding: 4px; }
+.chat-typing { min-height: 18px; margin: 0; padding: 0 12px; font-size: 11px; color: #c5a5ae; }
+.message-composer { display: flex; gap: 8px; padding: 8px 12px; }
+.message-composer input { width: 0; min-width: 0; flex: 1; font-size: 13px; }
+.message-composer button { padding: 8px 12px; font-size: 13px; }
+.message-composer button:disabled { opacity: .5; cursor: wait; }
+.composer-help { margin: 0; padding: 0 12px 8px; color: #c5a5ae; font-size: 10px; }
+@media (max-width: 600px) {
+  #messages-window { left: 12px; width: calc(100vw - 24px); }
+  .messenger { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); height: min(460px, 52dvh); }
+  .conversation-list { display: flex; gap: 4px; padding: 6px; border-right: 0; border-bottom: 1px solid #59323f; }
+  .conversation-heading, .conversation-list small { display: none; }
+  .conversation-list button { margin: 0; width: auto; flex: 1; padding: 8px; font-size: 12px; }
+  .conversation-header { padding: 8px 12px; }
+}
+
+/* GUIDED DIALOGUE — authored reply buttons instead of a text input. */
+.guided-composer { display: none !important; }
+.dialogue-choices { flex-shrink: 0; padding: 8px 12px; max-height: 150px; overflow-y: auto; border-top: 1px solid #59323f; }
+.dialogue-choices p { margin: 0 0 6px; font-size: 11px; color: #c5a5ae; }
+.dialogue-choices button { display: block; width: 100%; margin-top: 5px; padding: 9px 12px; text-align: left; font-size: 12px; line-height: 1.4; }
+.dialogue-choices button::before { content: '› '; color: #e7a6b8; }
+
+/* WINTERHOUSE PHOTO VIEWER — scene, zoom and inspected label. */
+.photo-archive { margin-top: 24px; padding-top: 16px; border-top: 1px solid #80505e; }
+.photo-archive header p { font-size: 12px; color: #c5a5ae; }
+.photo-viewport { position: relative; height: clamp(160px, 30dvh, 300px); overflow: hidden; border: 1px solid #80505e; background: #090609; }
+.archive-photo { display: block; width: 100%; height: 100%; object-fit: cover; transform-origin: 83% 74%; }
+.photo-hotspot { position: absolute; right: 12px; bottom: 12px; padding: 8px 12px; background: #180d12ed; font-size: 12px; }
+.photo-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 12px; font-size: 12px; }
+.photo-controls input { flex: 1; min-width: 90px; padding: 0; accent-color: #e7a6b8; }
+.photo-controls button { font-size: 12px; }
+.photo-discovery { margin-top: 16px; padding: 16px; border-left: 3px solid #e7a6b8; background: #351420; }
+.photo-discovery h4 { margin-top: 0; }
+.label-closeup { display: block; width: 100%; height: auto; border: 1px solid #80505e; }
+.photo-caption { font-size: 12px; color: #c5a5ae; }
+
+/* EVIDENCE NOTEBOOK — collected clues and investigation notes. */
+.evidence-notebook { margin-top: 20px; padding: 16px; max-width: 240px; max-height: 34dvh; overflow-y: auto; border: 1px solid #80505e; border-radius: 8px; background: #180d12ed; font-size: 12px; }
+.evidence-notebook summary { cursor: pointer; color: #e7a6b8; font-size: 14px; }
+.evidence-notebook ul { padding-left: 18px; line-height: 1.6; }
+.evidence-notebook li { margin: 12px 0; }
+.evidence-notebook p { color: #c5a5ae; line-height: 1.5; }
+@media (max-width: 600px) { .evidence-notebook { max-width: 100%; max-height: 22dvh; } }
+
+/* CHAPTER TWO — evidence deduction and Evelyn's live conversation. */
+.deduction-panel { border-top: 1px solid #80505e; margin-top: 14px; padding-top: 12px; }
+.deduction-panel button { width: 100%; margin: 5px 0; padding: 9px; text-align: left; font-size: 12px; line-height: 1.5; }
+.evelyn-chapter { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; }
+.evelyn-chapter .chat-timeline { flex: 1; }
+.evelyn-transcript { padding: 12px; border: 1px solid #80505e; background: #10080c; white-space: pre-wrap; font: inherit; font-size: 12px; }

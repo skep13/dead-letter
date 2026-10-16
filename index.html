@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dead Letter</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- JavaScript modules: start here; see js/README.md for the file map. -->
+    <script type="module" src="js/main.js"></script>
+</head>
+<body>
+<main id="desktop">
+    <header>
+        <h1>Dead Letter</h1>
+        <p id="marina-status" role="status">
+        Marina's computer - last online 04:15
+         </p>
+    </header>
+
+
+<nav aria-label="Desktop apps">
+   <button id="files-button" type="button">Files</button>
+   <button id="notes-button" type="button">Notes</button>
+   <button id="recordings-button" type="button">Recordings</button>
+   <button id="messages-button" type="button">Messages</button>
+</nav>
+
+<section id="files-window" class="app-window" hidden
+    aria-labelledby="files-title">
+<div class="window-header">
+    <h2 id="files-title">Files</h2>
+    <div class="window-controls">
+      <button type="button" data-minimise="files" aria-label="Minimise Files">−</button>
+      <button id="close-files" type="button" aria-label="Close Files">&times;</button>
+    </div>
+</div>
+
+<div class="window-content">
+<h3>diary.txt</h3>
+    <p>October 12 — 03:17</p>
+    <p>
+      The broadcast happened again. Same voice. Same words.
+      Nobody else seems to hear it.
+    </p>
+    <p>
+      I locked my notes. The password is the name of the flower
+      on my wallpaper. All lowercase.
+    </p>
+</div>
+</section>
+
+<section id="notes-window" class="app-window" hidden
+    aria-labelledby="notes-title">
+<div class="window-header">
+    <h2 id="notes-title">Notes - Locked</h2>
+    <button id="close-notes" type="button" aria-label="Close Notes window">
+        &times;
+    </button>
+</div>
+
+<div class="window-content">
+  <form id="notes-form">
+    <p>Enter password to unlock:</p>
+    <input type="password" id="notes-password" aria-label="Password input">
+    <button id="unlock-notes" type="submit">Unlock</button>
+    <p id="password-message" class="error-message" role="status"></p>
+  </form>
+
+<div id="secret-note" hidden>
+    <h3>Do not forget</h3>
+      <p>The broadcast starts at 03:17.</p>
+      <p>
+        Someone answered me last night.
+        They knew my name before I said it.
+      </p>
+      <p>If it happens again, save the recording.</p>
+    </div>
+  </div>
+</section>
+
+<section id="recordings-window" class="app-window" hidden
+    aria-labelledby="recordings-title">
+<div class="window-header">
+    <h2 id="recordings-title">Recordings - Marina</h2>
+    <button id="close-recordings" type="button" aria-label="Close Recordings window">
+        &times;
+    </button>
+</div>
+
+<div class="window-content">
+     <h3>broadcast_0317.txt</h3>
+    <p>[Recording transcript — October 13]</p>
+    <p>03:17 — Static.</p>
+    <p>03:18 — “Marina. You kept the roses.”</p>
+    <p>03:19 — “Read the message you never sent.”</p>
+    <p>[Recording ends]</p>
+  </div>
+</section>
+
+<section id="messages-window" class="app-window" hidden
+    aria-labelledby="messages-title">
+<div class="window-header">
+    <h2 id="messages-title">Messages</h2>
+    <button id="close-messages" type="button" aria-label="Close Messages window">
+        &times;
+    </button>
+</div>
+
+<div class="window-content">
+<!-- INCOMING STORY MESSAGE: revealed after the greenhouse archive. -->
+<article id="marina-incoming" class="incoming-message" hidden tabindex="-1">
+  <h3>Marina <small>04:15 · Received</small></h3>
+  <p>you opened it.<br>is evelyn still there?</p>
+</article>
+<h3>Draft — To: Evelyn</h3>
+    <p><strong>Not sent · October 14, 04:12</strong></p>
+
+    <p>Evelyn, I know you told me to stop listening.</p>
+    <p>
+      Tonight the voice sounded like you.
+      It repeated something you said in the greenhouse,
+      something nobody else could have heard.
+    </p>
+    <p>
+      I saved a copy of the archive before it disappeared.
+      The terminal can open it.
+    </p>
+    <p>
+      If I forget the command again:
+      <code>open greenhouse</code>
+    </p>
+    <p>
+      Please call me. And if someone answers in my voice,
+      ask them what happened to the roses.
+    </p>
+    <p>[End of draft]</p>
+  </div>
+</section>
+
+<section id="terminal-window" class="app-window" hidden
+    aria-labelledby="terminal-title">
+<div class="window-header">
+    <h2 id="terminal-title">Terminal</h2>
+
+    <div class="window-controls">
+        <button type="button" data-minimise="terminal" aria-label="Minimise Terminal">−</button>
+        <button id="close-terminal" type="button" aria-label="Close Terminal">&times;</button>
+    </div>
+</div>
+
+<div class="window-content terminal-content">
+    <pre id="terminal-output" role="log" aria-label="Terminal output">DEAD LETTER — LOCAL ARCHIVE
+Type help to see available commands.</pre>
+
+    <form id="terminal-form" class="terminal-form">
+      <label for="terminal-input">marina@local:~$</label>
+      <input id="terminal-input" type="text"
+             autocomplete="off" autocapitalize="off"
+             spellcheck="false" required>
+      <button type="submit">Run</button>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="taskbar" aria-label="Taskbar">
+    <span class="taskbar-brand">DEAD LETTER</span>
+
+<div class="taskbar-apps">
+    <button id="taskbar-files" data-task-app="files" type="button" aria-label="Open Files window">Files</button>
+    <button id="taskbar-notes" data-task-app="notes" type="button" aria-label="Open Notes window">Notes</button>
+    <button id="taskbar-recordings" data-task-app="recordings" type="button" aria-label="Open Recordings window">Recordings</button>
+    <button id="taskbar-messages" data-task-app="messages" type="button" aria-label="Open Messages window">Messages</button>
+    <button id="terminal-button" data-task-app="terminal" type="button">Terminal</button>
+</div>
+
+<button id="sound-toggle" type="button" aria-pressed="false" aria-label="Mute notification sounds">Sound on</button>
+<div class="taskbar-clock">
+    <time>04:15</time>
+    <small>October 15</small>
+</div>
+</footer>
+
+
+<!-- NOTIFICATION: separate open and dismiss buttons, above the taskbar. -->
+<aside id="message-notification" class="message-notification" aria-label="New message" hidden>
+  <button id="open-notification" class="notification-body" type="button">
+    <span class="notification-source">Messages · Marina <small>now</small></span>
+    <span>you opened it.</span>
+    <span>is evelyn still there?</span>
+  </button>
+  <button id="dismiss-notification" class="notification-dismiss" type="button" aria-label="Dismiss notification">&times;</button>
+</aside>
+<p id="notification-announcement" class="visually-hidden" role="status"></p>
+</body>
+</html>
