@@ -10,21 +10,7 @@ The computer is the game: clues live in its files, messages and simulated termin
 
 ![Dead Letter's blood-red rose desktop wallpaper](assets/blood-roses.png)
 
-*The game's wallpaper, rather than a gameplay screenshot.*
-
-## What you can do
-
-- Open, close and drag app windows, and bring them to the foreground.
-- Launch apps from the taskbar; Files and Terminal currently support minimising.
-- Explore a diary, unlock Marina's notes and read a broadcast transcript.
-- Switch between Evelyn's message history, Marina's conversation and an unsent draft.
-- Reply using prewritten dialogue choices.
-- Receive a sliding message notification with a sound, unread indicators and a mute control.
-- Use fictional terminal commands to recover archives.
-- Zoom into a greenhouse photograph and inspect a suspicious plant label.
-- Collect three discoveries in an evidence notebook.
-
-Messages and terminal commands are part of the fiction. They do not contact real people or execute commands on your computer.
+Messages and terminal commands are part of the fiction story, they do not contact real people or execute commands on your computer
 
 ## Run locally
 
@@ -51,7 +37,7 @@ There are no npm dependencies to install and no build step.
 
 ## Playing
 
-Start with Files and explore the other apps for clues. Drag windows by holding the left mouse button on their title bars. The taskbar restores minimised windows.
+Start with Files and explore the other apps for clues drag windows by holding the left mouse button on their title bars. The taskbar restores minimised windows.
 
 In Terminal, type `help` for commands or `ls` to list the available archives. Messages uses selectable replies, so you do not need to guess particular dialogue phrases. Sound can be disabled from the taskbar.
 
